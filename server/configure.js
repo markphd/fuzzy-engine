@@ -23,3 +23,5 @@ if ('development' === app.get('env')) {
 }
     return app;
 };
+
+routes(app);
