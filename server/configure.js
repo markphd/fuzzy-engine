@@ -11,7 +11,7 @@ var path = require('path'),
 module.exports = function(app) {
 app.use(morgan('dev'));
    app.use(bodyParser.urlencoded({'extended':true}));
-   app.use(bodyparser.json());
+   app.use(bodyParser.json());
    app.use(methodOverride());
    app.use(cookieParser('some-secret-value-here'));
    routes(app);//moving the routes to routes folder.
@@ -21,7 +21,13 @@ app.use(morgan('dev'));
 if ('development' === app.get('env')) {
    app.use(errorHandler());
 }
+    app.engine('handlebars', exphbs.create({
+        defaultLayout: 'main',
+        layoutsDir: app.get('views') + '/layouts',
+        partialsDir: [app.get('views') + '/partials']
+    }).engine);
+    app.set('view engine', 'handlebars');
+    
     return app;
 };
 
-routes(app);
