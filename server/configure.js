@@ -6,11 +6,13 @@ var path = require('path'),
     cookieParser = require('cookie-parser'),
     morgan = require('morgan'),
     methodOverride = require('method-override'),
-    errorHandler = require('errorhandler');
-    moment = require('moment');
+    errorHandler = require('errorhandler'),
+    moment = require('moment'),
+    multer = require('multer');
 
 module.exports = function(app) {
-app.use(morgan('dev'));
+   app.use(morgan('dev'));
+   app.use(multer({ dest: path.join(__dirname, 'public/upload/temp')}).single('file'));
    app.use(bodyParser.urlencoded({'extended':true}));
    app.use(bodyParser.json());
    app.use(methodOverride());
@@ -36,4 +38,3 @@ if ('development' === app.get('env')) {
     
     return app;
 };
-
