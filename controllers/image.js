@@ -43,24 +43,24 @@ module.exports = {
             };
 
             var tempPath = req.file.path,
-                ext = req.file.mimetype.toLowerCase(),
+                ext = path.extname(req.file.originalname).toLowerCase(),
                 targetPath = path.resolve('./public/upload/' + imgUrl + ext);
 
-            // if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext ===
-            //        '.gif') {
-            //        fs.rename(tempPath, targetPath, function(err) {
-            //            if (err) throw err;
-            //            res.redirect('/images/' + imgUrl);
-            //        });
-            //    } else {
-            //        fs.unlink(tempPath, function () {
-            //            if (err) throw err;
-            //            res.json(500, {error: 'Only image files are allowed.'});
-            //        });
-            // }
+            if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext ===
+                   '.gif') {
+                   fs.rename(tempPath, targetPath, function(err) {
+                       if (err) throw err;
+                       res.redirect('/images/' + imgUrl);
+                   });
+               } else {
+                   fs.unlink(tempPath, function () {
+                       if (err) throw err;
+                       res.json(500, {error: 'Only image files are allowed.'});
+                   });
+            }
 
-            console.log('This is tempPath ', tempPath);
-            console.log('This is ext', ext);
+            // console.log('This is tempPath ', tempPath);
+            // console.log('This is ext', ext);
         };
 
         saveImage();
