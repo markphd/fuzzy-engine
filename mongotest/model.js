@@ -7,10 +7,11 @@ console.log('Mongoose connected.');
 });
 
 var Account = new Schema({
-username: { type: String },
+username: { type: String, required: true },
 date_created: { type: Date, default: Date.now },
 visits: { type: Number, default: 0 },
-active: { type: Boolean, default: false }
+active: { type: Boolean, default: false },
+age: { type: Number, required: true, min: 13, max: 120 }
 });
 
 
