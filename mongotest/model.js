@@ -14,12 +14,18 @@ active: { type: Boolean, default: false },
 age: { type: Number, required: true, min: 13, max: 120 }
 });
 
+Account.statics.findByAgeRange = function(min, max, callback) {
+this.find({ age: { $gt : min, $lte : max} }, callback);
+};
 
 var AccountModel = mongoose.model('Account', Account);
-var newUser = new AccountModel({  username: 'randomUser' });
-console.log(newUser.username);
-console.log(newUser.date_created);
-console.log(newUser.visits);
-console.log(newUser.active);
 
-newUser.save();
+// var newUser = new AccountModel({  username: 'randomUser' });
+// console.log(newUser.username);
+// console.log(newUser.date_created);
+// console.log(newUser.visits);
+// console.log(newUser.active);
+
+AccountModel.findByAgeRange(18, 30, function(err, accounts){
+console.log(accounts.length);    // => 2
+});
