@@ -28,13 +28,13 @@ MongoClient.connect('mongodb://localhost:27017/mongotest', function(err, db) {
 
     var collection = db.collection('testing');
     collection.insert({
-        'title': 'Snowcrash'
+        'title': 'Snowcrashed'
     }, function(err, docs) {
         console.log(collection.length + ' record inserted.');
         console.log(collection[0]._id + ' - ' + collection[0].title);
 
         collection.findOne({
-            title: 'Snowcrash'
+            title: 'Snowcrashesss'
         }, function(err, doc) {
             console.log(doc._id + ' - ' + doc.title);
             db.close();
