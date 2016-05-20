@@ -5,15 +5,41 @@ var fs = require('fs'),
 
 module.exports = {
     index: function(req, res) {
+        // Create a new empty viewModel object
         var viewModel = {
             image: {
             },
             comments: [
             ]
         };
-        sidebar(viewModel,function(viewModel){
-            res.render('image', viewModel);
-        });
+        Models.Image.findOne({ filename: { $regex: req.params.image_id } },
+          function(err, image) {
+            if (err) { throw err; }
+            if (image) {
+                  // Increment image views
+                  image.views = image.views + 1;
+                  viewModel.image = image;
+                  image.save();
+
+                  // Find all comments with the image_id property equal to the _id of the original image model
+                  Models.Comment.find({ image_id: image._id}, {}, { sort: { 'timestamp': 1 }}, 
+                    function(err, comments){
+                      if (err) { throw err; }
+                      
+                      // Attach comments array to viewModel
+                      viewModel.comments = comments;
+
+                      // Render the page using sidebar, passing in the viewModel and callback function
+                      sidebar(viewModel, function(viewModel) {
+                        res.render('image', viewModel);
+                      });
+                    }
+                  );
+
+                } else {
+                  res.redirect('/');
+                } 
+          });
     },
     create: function(req, res) {
         var saveImage = function() {
